@@ -1,4 +1,4 @@
-import { serverError, ok, badRequest } from '../helper.js';
+import { serverError, ok, badRequest, notFound } from '../helper.js';
 import { GetUserByIdUseCase } from '../../useCases/getUserById/getUserByIdUseCase.js';
 import validator from 'validator';
 
@@ -14,6 +14,12 @@ export class GetUserByIdController {
             const user = await getUserByIdUseCase.execute(
                 httpRequest.params.userId,
             );
+
+            if (!user) {
+                return notFound({
+                    message: 'User not found',
+                });
+            }
 
             return ok(user);
         } catch (error) {
