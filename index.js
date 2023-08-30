@@ -3,6 +3,7 @@ import express from 'express';
 import { CreateUserController } from './src/controllers/createUser/createUserController.js';
 import { GetUserByIdController } from './src/controllers/getUserById/getUserByIdController.js';
 import { UpdateUserController } from './src/controllers/updateUser/updateUserController.js';
+import { DeleteUserController } from './src/controllers/deleteUser/deleteUserController.js';
 
 const app = express();
 
@@ -20,6 +21,14 @@ app.patch('/api/users/:userId', async (request, response) => {
     const updateUserController = new UpdateUserController();
 
     const { statusCode, body } = await updateUserController.execute(request);
+
+    response.status(statusCode).send(body);
+});
+
+app.delete('/api/users/:userId', async (request, response) => {
+    const deleteUserController = new DeleteUserController();
+
+    const { statusCode, body } = await deleteUserController.execute(request);
 
     response.status(statusCode).send(body);
 });
