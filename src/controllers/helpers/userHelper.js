@@ -1,4 +1,4 @@
-import { badRequest } from './httpHelper';
+import { badRequest } from './httpHelper.js';
 import validator from 'validator';
 
 export const invalidPasswordResponse = () =>
