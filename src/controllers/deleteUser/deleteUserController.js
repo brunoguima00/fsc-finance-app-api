@@ -1,7 +1,7 @@
 import validator from 'validator';
 import {
     invalidIdResponse,
-    notFound,
+    userNotFoundResponse,
     ok,
     serverError,
 } from '../helpers/index.js';
@@ -15,15 +15,14 @@ export class DeleteUserController {
             if (!isIdValid) {
                 return invalidIdResponse();
             }
+
             const deleteUserByIdUseCase = new DeleteUserUseCase();
             const deletedUser = await deleteUserByIdUseCase.execute(
                 httpRequest.params.userId,
             );
 
             if (!deletedUser) {
-                return notFound({
-                    message: 'User not found',
-                });
+                return userNotFoundResponse();
             }
 
             return ok(deletedUser);
