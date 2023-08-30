@@ -16,17 +16,17 @@ export class DeleteUserController {
                 return invalidIdResponse();
             }
             const deleteUserByIdUseCase = new DeleteUserUseCase();
-            const user = await deleteUserByIdUseCase.execute(
+            const deletedUser = await deleteUserByIdUseCase.execute(
                 httpRequest.params.userId,
             );
 
-            if (!user) {
+            if (!deletedUser) {
                 return notFound({
                     message: 'User not found',
                 });
             }
 
-            return ok(user);
+            return ok(deletedUser);
         } catch (error) {
             console.error(error);
             return serverError();
