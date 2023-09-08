@@ -1,6 +1,5 @@
 import validator from 'validator';
 import { EmailAlreadyInUseError } from '../../Errors/user.js';
-import { UpdateUserUseCase } from '../../useCases/updateUser/updateUserUseCase.js';
 import {
     checkIfEmailIsValid,
     checkIfPasswordIsValid,
@@ -13,6 +12,9 @@ import {
 } from '../helpers/index.js';
 
 export class UpdateUserController {
+    constructor(updateUserUseCase) {
+        this.updateUserUseCase = updateUserUseCase;
+    }
     async execute(httpRequest) {
         try {
             const userId = httpRequest.params.userId;
@@ -35,8 +37,8 @@ export class UpdateUserController {
             const someFieldIsNotAllowed = Object.keys(params).some(
                 (field) => !allowedFields.includes(field),
             );
-
-            if (someFieldIsNotAllowed) {
+            // Quando mudei para dependency injection coloquei o ! no if
+            if (!someFieldIsNotAllowed) {
                 return badRequest({
                     message: 'Some provided field is not allowed',
                 });
@@ -58,9 +60,10 @@ export class UpdateUserController {
                 return emailIsAlreadyUseResponse();
             }
 
-            const updateUserUseCase = new UpdateUserUseCase();
-
-            const updatedUser = await updateUserUseCase.execute(userId, params);
+            const updatedUser = await this.updateUserUseCase.execute(
+                userId,
+                params,
+            );
 
             return ok(updatedUser);
         } catch (error) {
