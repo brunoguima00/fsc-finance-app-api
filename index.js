@@ -5,9 +5,12 @@ import { GetUserByIdController } from './src/controllers/getUserById/getUserById
 import { UpdateUserController } from './src/controllers/updateUser/updateUserController.js';
 import { DeleteUserController } from './src/controllers/deleteUser/deleteUserController.js';
 import { PostgresGetUserByIdRepository } from './src/repositories/postgres/user/getUserByIdRepository.js';
+import { PostgresCreateUserRepository } from './src/repositories/postgres/user/createUserRepository.js';
 import { GetUserByIdUseCase } from './src/useCases/getUserById/getUserByIdUseCase.js';
 import { PostgresDeleteUserRepository } from './src/repositories/postgres/user/deleteUserRepository.js';
 import { DeleteUserUseCase } from './src/useCases/deleteUserUseCase/deleteUserUseCase.js';
+import { PostgresGetUserByEmailRepository } from './src/repositories/postgres/user/getUserByEmail.js';
+import { CreateUserUseCase } from './src/useCases/createUser/createUserUseCase.js';
 
 const app = express();
 
@@ -26,7 +29,16 @@ app.get('/api/users/:userId', async (request, response) => {
 });
 
 app.post('/api/users', async (request, response) => {
-    const createUserController = new CreateUserController();
+    const getUserByEmailRepository = new PostgresGetUserByEmailRepository();
+
+    const createUserRepository = new PostgresCreateUserRepository();
+
+    const createUserUseCase = new CreateUserUseCase(
+        getUserByEmailRepository,
+        createUserRepository,
+    );
+
+    const createUserController = new CreateUserController(createUserUseCase);
 
     const { statusCode, body } = await createUserController.execute(request);
 
