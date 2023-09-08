@@ -4,10 +4,24 @@ import { CreateUserController } from './src/controllers/createUser/createUserCon
 import { GetUserByIdController } from './src/controllers/getUserById/getUserByIdController.js';
 import { UpdateUserController } from './src/controllers/updateUser/updateUserController.js';
 import { DeleteUserController } from './src/controllers/deleteUser/deleteUserController.js';
+import { PostgresGetUserByIdRepository } from './src/repositories/postgres/user/getUserByIdRepository.js';
+import { GetUserByIdUseCase } from './src/useCases/getUserById/getUserByIdUseCase.js';
 
 const app = express();
 
 app.use(express.json());
+
+app.get('/api/users/:userId', async (request, response) => {
+    const getUserByIdRepository = new PostgresGetUserByIdRepository();
+
+    const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository);
+
+    const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
+
+    const { statusCode, body } = await getUserByIdController.execute(request);
+
+    response.status(statusCode).send(body);
+});
 
 app.post('/api/users', async (request, response) => {
     const createUserController = new CreateUserController();
@@ -29,14 +43,6 @@ app.delete('/api/users/:userId', async (request, response) => {
     const deleteUserController = new DeleteUserController();
 
     const { statusCode, body } = await deleteUserController.execute(request);
-
-    response.status(statusCode).send(body);
-});
-
-app.get('/api/users/:userId', async (request, response) => {
-    const getUserByIdController = new GetUserByIdController();
-
-    const { statusCode, body } = await getUserByIdController.execute(request);
 
     response.status(statusCode).send(body);
 });
