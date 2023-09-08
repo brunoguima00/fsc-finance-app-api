@@ -5,9 +5,11 @@ import {
     ok,
     serverError,
 } from '../helpers/index.js';
-import { DeleteUserUseCase } from '../../useCases/deleteUserUseCase/deleteUserUseCase.js';
 
 export class DeleteUserController {
+    constructor(deleteUserUseCase) {
+        this.deleteUserByIdUseCase = deleteUserUseCase;
+    }
     async execute(httpRequest) {
         try {
             const isIdValid = validator.isUUID(httpRequest.params.userId);
@@ -16,8 +18,7 @@ export class DeleteUserController {
                 return invalidIdResponse();
             }
 
-            const deleteUserByIdUseCase = new DeleteUserUseCase();
-            const deletedUser = await deleteUserByIdUseCase.execute(
+            const deletedUser = await this.deleteUserByIdUseCase.execute(
                 httpRequest.params.userId,
             );
 
