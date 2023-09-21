@@ -1,15 +1,15 @@
 import { GetUserByIdController } from '../../controllers/getUserById/getUserByIdController.js';
 import { PostgresGetUserByIdRepository } from '../../repositories/postgres/user/getUserByIdRepository.js';
-import { GetUserByIdUseCase } from '../../useCases/getUserById/getUserByIdUseCase.js';
+import { GetUserByIdUseCase } from '../../useCases/users/getUserById/getUserByIdUseCase.js';
 import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/user/getUserByEmail.js';
 import { PostgresCreateUserRepository } from '../../repositories/postgres/user/createUserRepository.js';
-import { CreateUserUseCase } from '../../useCases/createUser/createUserUseCase.js';
+import { CreateUserUseCase } from '../../useCases/users/createUser/createUserUseCase.js';
 import { CreateUserController } from '../../controllers/createUser/createUserController.js';
 import { PostgresUpdateUserRepository } from '../../repositories/postgres/user/updateUserRepository.js';
-import { UpdateUserUseCase } from '../../useCases/updateUser/updateUserUseCase.js';
+import { UpdateUserUseCase } from '../../useCases/users/updateUser/updateUserUseCase.js';
 import { UpdateUserController } from '../../controllers/updateUser/updateUserController.js';
 import { PostgresDeleteUserRepository } from '../../repositories/postgres/user/deleteUserRepository.js';
-import { DeleteUserUseCase } from '../../useCases/deleteUserUseCase/deleteUserUseCase.js';
+import { DeleteUserUseCase } from '../../useCases/users/deleteUserUseCase/deleteUserUseCase.js';
 import { DeleteUserController } from '../../controllers/deleteUser/deleteUserController.js';
 
 export const makeGetUserByIdController = () => {
