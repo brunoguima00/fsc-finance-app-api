@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { EmailAlreadyInUseError } from '../../Errors/user.js';
+import { EmailAlreadyInUseError } from '../../../Errors/user.js';
 import {
     checkIfEmailIsValid,
     checkIfPasswordIsValid,
@@ -9,7 +9,7 @@ import {
     badRequest,
     serverError,
     ok,
-} from '../helpers/index.js';
+} from '../../helpers/index.js';
 
 export class UpdateUserController {
     constructor(updateUserUseCase) {

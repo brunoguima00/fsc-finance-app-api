@@ -1,14 +1,14 @@
 import validator from 'validator';
 import {
     invalidIdResponse,
-    userNotFoundResponse,
     ok,
     serverError,
-} from '../helpers/index.js';
+    userNotFoundResponse,
+} from '../../helpers/index.js';
 
-export class DeleteUserController {
-    constructor(deleteUserUseCase) {
-        this.deleteUserByIdUseCase = deleteUserUseCase;
+export class GetUserByIdController {
+    constructor(getUserByIdUseCase) {
+        this.getUserByIdUseCase = getUserByIdUseCase;
     }
     async execute(httpRequest) {
         try {
@@ -18,15 +18,15 @@ export class DeleteUserController {
                 return invalidIdResponse();
             }
 
-            const deletedUser = await this.deleteUserByIdUseCase.execute(
+            const user = await this.getUserByIdUseCase.execute(
                 httpRequest.params.userId,
             );
 
-            if (!deletedUser) {
+            if (!user) {
                 return userNotFoundResponse();
             }
 
-            return ok(deletedUser);
+            return ok(user);
         } catch (error) {
             console.error(error);
             return serverError();

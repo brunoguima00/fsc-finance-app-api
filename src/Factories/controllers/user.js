@@ -1,16 +1,16 @@
-import { GetUserByIdController } from '../../controllers/getUserById/getUserByIdController.js';
 import { PostgresGetUserByIdRepository } from '../../repositories/postgres/user/getUserByIdRepository.js';
-import { GetUserByIdUseCase } from '../../useCases/users/getUserById/getUserByIdUseCase.js';
 import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/user/getUserByEmail.js';
 import { PostgresCreateUserRepository } from '../../repositories/postgres/user/createUserRepository.js';
-import { CreateUserUseCase } from '../../useCases/users/createUser/createUserUseCase.js';
-import { CreateUserController } from '../../controllers/createUser/createUserController.js';
 import { PostgresUpdateUserRepository } from '../../repositories/postgres/user/updateUserRepository.js';
-import { UpdateUserUseCase } from '../../useCases/users/updateUser/updateUserUseCase.js';
-import { UpdateUserController } from '../../controllers/updateUser/updateUserController.js';
 import { PostgresDeleteUserRepository } from '../../repositories/postgres/user/deleteUserRepository.js';
+import { GetUserByIdUseCase } from '../../useCases/users/getUserById/getUserByIdUseCase.js';
+import { CreateUserUseCase } from '../../useCases/users/createUser/createUserUseCase.js';
+import { UpdateUserUseCase } from '../../useCases/users/updateUser/updateUserUseCase.js';
 import { DeleteUserUseCase } from '../../useCases/users/deleteUserUseCase/deleteUserUseCase.js';
-import { DeleteUserController } from '../../controllers/deleteUser/deleteUserController.js';
+import { GetUserByIdController } from '../../controllers/users/getUserById/getUserByIdController.js';
+import { CreateUserController } from '../../controllers/users/createUser/createUserController.js';
+import { UpdateUserController } from '../../controllers/users/updateUser/updateUserController.js';
+import { DeleteUserController } from '../../controllers/users/deleteUser/deleteUserController.js';
 
 export const makeGetUserByIdController = () => {
     const getUserByIdRepository = new PostgresGetUserByIdRepository();
