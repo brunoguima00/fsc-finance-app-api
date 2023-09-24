@@ -1,4 +1,4 @@
-import { PostgresHelper } from '../../../database/postgres/helper';
+import { PostgresHelper } from '../../../database/postgres/helper.js';
 
 export class PostgresCreateTransactionRepository {
     async execute(createTransactionParams) {
@@ -9,7 +9,7 @@ export class PostgresCreateTransactionRepository {
             `,
             [
                 createTransactionParams.id,
-                createTransactionParams.userid,
+                createTransactionParams.userId,
                 createTransactionParams.name,
                 createTransactionParams.date,
                 createTransactionParams.amount,

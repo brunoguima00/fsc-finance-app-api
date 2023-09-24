@@ -1,4 +1,4 @@
-import { serverError, badRequest } from '../../helpers.js';
+import { serverError, badRequest } from '../../helpers/httpHelper.js';
 import { created } from '../../helpers/httpHelper.js';
 import {
     checkIfIdIsValid,
@@ -15,21 +15,17 @@ export class CreateTransactionController {
         try {
             const params = httpRequest.body;
 
-            const requiredFields = [
-                'id',
-                'userId',
-                'name',
-                'date',
-                'amount',
-                'type',
-            ];
+            const requiredFields = ['userId', 'name', 'date', 'amount', 'type'];
             for (const field of requiredFields) {
-                if (!params[field] || params[field].trim().length == 0) {
+                if (
+                    !params[field] ||
+                    params[field].toString().trim().length == 0
+                ) {
                     return badRequest({ message: `Missing param: ${field}` });
                 }
             }
 
-            const userIdIsValid = checkIfIdIsValid(params.userID);
+            const userIdIsValid = checkIfIdIsValid(params.userId);
             if (!userIdIsValid) {
                 return invalidIdResponse();
             }
