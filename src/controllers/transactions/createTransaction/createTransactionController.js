@@ -1,9 +1,10 @@
-import { serverError, badRequest } from '../../helpers/httpHelper.js';
-import { created } from '../../helpers/httpHelper.js';
 import {
     checkIfIdIsValid,
     invalidIdResponse,
-} from '../../helpers/userHelper.js';
+    serverError,
+    badRequest,
+    created,
+} from '../../helpers/index.js';
 
 import validator from 'validator';
 
