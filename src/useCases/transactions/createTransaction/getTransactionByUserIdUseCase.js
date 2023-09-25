@@ -11,7 +11,7 @@ export class GetTransactionByUserIdUseCase {
         const user = await this.getUserByIdRepository(userId);
 
         if (!user) {
-            throw new UserNotFoundError();
+            throw new UserNotFoundError(params.userId);
         }
         const transactions =
             await this.getTransactionByUserIdRepository.execute(user);
