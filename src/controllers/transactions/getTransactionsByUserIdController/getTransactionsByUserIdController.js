@@ -6,11 +6,11 @@ import {
     checkIfIdIsValid,
     invalidIdResponse,
     ok,
-} from '../../../controllers/helpers/index.js';
+} from '../../helpers/index.js';
 
-export class GetTransactionByUderIdController {
-    constructor(getTransactionByUserIdUseCase) {
-        this.getTransactionByUserIdUseCase = getTransactionByUserIdUseCase;
+export class GetTransactionsByUserIdController {
+    constructor(getTransactionsByUserIdUseCase) {
+        this.getTransactionsByUserIdUseCase = getTransactionsByUserIdUseCase;
     }
     async execute(httpRequest) {
         try {
@@ -29,7 +29,7 @@ export class GetTransactionByUderIdController {
             }
 
             const transaction =
-                await this.getTransactionByUserIdUseCase.execute({ userId });
+                await this.getTransactionsByUserIdUseCase.execute({ userId });
 
             return ok(transaction);
         } catch (error) {

@@ -2,7 +2,7 @@ import validator from 'validator';
 import { badRequest } from './index.js';
 
 export const checkIfAmountIsValid = (amount) => {
-    return validator.isCurrency(amount.amount.toString(), {
+    return validator.isCurrency(amount.toString(), {
         digits_after_decimal: [2],
         allow_negative: false,
         decimal_separator: '.',
