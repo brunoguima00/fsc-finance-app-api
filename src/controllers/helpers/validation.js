@@ -37,9 +37,3 @@ export const validateRequiredFields = (params, requiredFields) => {
         missingField: undefined,
     };
 };
-
-export const invalidamountResponse = () => {
-    badRequest({
-        message: 'The amount must be a valid currency',
-    });
-};
