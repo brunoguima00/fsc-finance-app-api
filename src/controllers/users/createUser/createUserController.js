@@ -20,12 +20,7 @@ export class CreateUserController {
             const params = httpRequest.body;
 
             // validar a requisição(campos obrigatórios, tamanho de senha, se o email é valido)
-            const requiredFields = [
-                'firstName',
-                'lastName',
-                'email',
-                'password',
-            ];
+            const requiredFields = ['firstName', 'email', 'password'];
 
             const { ok: someRequiredFieldWereProvided, missingField } =
                 validateRequiredFields(params, requiredFields);
