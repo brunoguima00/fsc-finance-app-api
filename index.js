@@ -9,6 +9,7 @@ import {
 import {
     makeCreateTransactionController,
     makeGetTransactionsByUserIdController,
+    makeDeleteTransactionController,
 } from './src/Factories/controllers/transaction.js';
 
 const app = express();
@@ -66,6 +67,15 @@ app.post('/api/transactions', async (request, response) => {
 
     const { statusCode, body } =
         await createTransactionController.execute(request);
+
+    response.status(statusCode).send(body);
+});
+
+app.delete('/api/transactions/:transactionId', async (request, response) => {
+    const deleteTransactionController = makeDeleteTransactionController();
+
+    const { statusCode, body } =
+        await deleteTransactionController.execute(request);
 
     response.status(statusCode).send(body);
 });
