@@ -11,6 +11,9 @@ import { GetUserByIdController } from '../../controllers/users/getUserById/getUs
 import { CreateUserController } from '../../controllers/users/createUser/createUserController.js';
 import { UpdateUserController } from '../../controllers/users/updateUser/updateUserController.js';
 import { DeleteUserController } from '../../controllers/users/deleteUser/deleteUserController.js';
+import { PostgresGetUserBalanceRepository } from '../../repositories/postgres/user/getUserBalanceRepository.js';
+import { GetUserBalanceUseCase } from '../../useCases/users/getUserBalanceUseCase/getUserBalanceUseCase.js';
+import { GetUserBalanceController } from '../../controllers/users/getUserBalance/getUserBalanceController.js';
 
 export const makeGetUserByIdController = () => {
     const getUserByIdRepository = new PostgresGetUserByIdRepository();
@@ -57,4 +60,20 @@ export const makeDeleteUserController = () => {
     const deleteUserController = new DeleteUserController(deleteUserUseCase);
 
     return deleteUserController;
+};
+
+export const makeGetUserBalanceController = () => {
+    const getUserBalanceRepository = new PostgresGetUserBalanceRepository();
+    const getUserById = new PostgresGetUserByIdRepository();
+
+    const getUserBalanceUseCase = new GetUserBalanceUseCase(
+        getUserBalanceRepository,
+        getUserById,
+    );
+
+    const getUserBalanceController = new GetUserBalanceController(
+        getUserBalanceUseCase,
+    );
+
+    return getUserBalanceController;
 };
