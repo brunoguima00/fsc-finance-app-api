@@ -1,15 +1,13 @@
 import validator from 'validator';
 import { EmailAlreadyInUseError } from '../../../Errors/user.js';
 import {
-    checkIfEmailIsValid,
-    checkIfPasswordIsValid,
-    emailIsAlreadyUseResponse,
     invalidIdResponse,
-    invalidPasswordResponse,
     badRequest,
     serverError,
     ok,
 } from '../../helpers/index.js';
+import { updateUserSchema } from '../../../schemas/user.js';
+import { ZodError } from 'zod';
 
 export class UpdateUserController {
     constructor(updateUserUseCase) {
@@ -38,27 +36,13 @@ export class UpdateUserController {
                 (field) => !allowedFields.includes(field),
             );
             // Quando mudei para dependency injection coloquei o ! no if
-            if (!someFieldIsNotAllowed) {
+            if (someFieldIsNotAllowed) {
                 return badRequest({
                     message: 'Some provided field is not allowed',
                 });
             }
 
-            if (params.password) {
-                // Verify if password has more than 6 characters
-                const passwordIsValid = checkIfPasswordIsValid(params.password);
-
-                if (!passwordIsValid) {
-                    return invalidPasswordResponse();
-                }
-            }
-
-            // Validar o email
-            const emailIsValid = checkIfEmailIsValid(params.email);
-
-            if (!emailIsValid) {
-                return emailIsAlreadyUseResponse();
-            }
+            await updateUserSchema.parseAsync(params);
 
             const updatedUser = await this.updateUserUseCase.execute(
                 userId,
@@ -67,6 +51,12 @@ export class UpdateUserController {
 
             return ok(updatedUser);
         } catch (error) {
+            if (error instanceof ZodError) {
+                return badRequest({
+                    message: error.errors[0].message,
+                });
+            }
+
             if (error instanceof EmailAlreadyInUseError) {
                 return badRequest({ message: error.message });
             }
