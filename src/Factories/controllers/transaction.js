@@ -8,6 +8,9 @@ import { GetTransactionsByUserIdController } from '../../controllers/transaction
 import { PostgresDeleteTransactionRepository } from '../../repositories/postgres/transactions/deleteTransactionRepository.js';
 import { DeleteTransactionUseCase } from '../../useCases/transactions/deleteTransaction/deleteTransactionUseCase.js';
 import { DeleteTransactionController } from '../../controllers/transactions/deleteTransaction/deleteTransactionController.js';
+import { PostgresUpdateTransactionRepository } from '../../repositories/postgres/transactions/updateTransactionRepository.js';
+import { UpdateTransactionUseCase } from '../../useCases/transactions/updateTransactions/updateTransactionsUseCase.js';
+import { UpdateTransactionController } from '../../controllers/transactions/updateTransaction/updateTransactionController.js';
 
 export const makeCreateTransactionController = () => {
     const createTransactionRepository =
@@ -57,4 +60,19 @@ export const makeDeleteTransactionController = () => {
     );
 
     return deleteTransactionController;
+};
+
+export const makeUpdateTransactionController = () => {
+    const updateTransactionRepository =
+        new PostgresUpdateTransactionRepository();
+
+    const updateTransactionUseCase = new UpdateTransactionUseCase(
+        updateTransactionRepository,
+    );
+
+    const updateTransactionController = new UpdateTransactionController(
+        updateTransactionUseCase,
+    );
+
+    return updateTransactionController;
 };
