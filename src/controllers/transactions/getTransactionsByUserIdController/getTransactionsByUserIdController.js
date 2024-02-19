@@ -15,7 +15,7 @@ export class GetTransactionsByUserIdController {
     async execute(httpRequest) {
         try {
             // usamos o query pois será um query param ?param
-            const userId = httpRequest.query.userId;
+            const userId = httpRequest.query.userid;
 
             // Verifica se o Id foi passado como parâmetro
             if (!userId) {
