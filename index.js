@@ -11,7 +11,8 @@ import {
     makeCreateTransactionController,
     makeGetTransactionsByUserIdController,
     makeDeleteTransactionController,
-} from './src/Factories/controllers/transaction.js';
+    makeUpdateTransactionController,
+} from './src/factories/controllers/transaction.js';
 
 const app = express();
 
@@ -86,6 +87,14 @@ app.delete('/api/transactions/:transactionId', async (request, response) => {
 
     const { statusCode, body } =
         await deleteTransactionController.execute(request);
+
+    response.status(statusCode).send(body);
+});
+app.patch('/api/transactions/:transactionId', async (request, response) => {
+    const updateTransactionController = makeUpdateTransactionController();
+
+    const { statusCode, body } =
+        await updateTransactionController.execute(request);
 
     response.status(statusCode).send(body);
 });
