@@ -31,7 +31,7 @@ export class UpdateTransactionController {
                 (field) => !allowedFields.includes(field),
             );
             // Quando mudei para dependency injection coloquei o ! no if
-            if (!someFieldIsNotAllowed) {
+            if (someFieldIsNotAllowed) {
                 return badRequest({
                     message: 'Some provided field is not allowed',
                 });
