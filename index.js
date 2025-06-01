@@ -55,8 +55,9 @@ app.delete('/api/users/:userId', async (request, response) => {
 app.get('/api/users/:userId/balance', async (request, response) => {
     const getUserBalanceController = makeGetUserBalanceController();
 
-    const { statusCode, body } =
-        await getUserBalanceController.execute(request);
+    const { statusCode, body } = await getUserBalanceController.execute(
+        request
+    );
 
     response.status(statusCode).send(body);
 });
@@ -67,8 +68,9 @@ app.get('/api/transactions', async (request, response) => {
     const getTransactionByUserIdController =
         makeGetTransactionsByUserIdController();
 
-    const { statusCode, body } =
-        await getTransactionByUserIdController.execute(request);
+    const { statusCode, body } = await getTransactionByUserIdController.execute(
+        request
+    );
 
     response.status(statusCode).send(body);
 });
@@ -76,8 +78,9 @@ app.get('/api/transactions', async (request, response) => {
 app.post('/api/transactions', async (request, response) => {
     const createTransactionController = makeCreateTransactionController();
 
-    const { statusCode, body } =
-        await createTransactionController.execute(request);
+    const { statusCode, body } = await createTransactionController.execute(
+        request
+    );
 
     response.status(statusCode).send(body);
 });
@@ -85,20 +88,24 @@ app.post('/api/transactions', async (request, response) => {
 app.delete('/api/transactions/:transactionId', async (request, response) => {
     const deleteTransactionController = makeDeleteTransactionController();
 
-    const { statusCode, body } =
-        await deleteTransactionController.execute(request);
+    const { statusCode, body } = await deleteTransactionController.execute(
+        request
+    );
 
     response.status(statusCode).send(body);
 });
 app.patch('/api/transactions/:transactionId', async (request, response) => {
     const updateTransactionController = makeUpdateTransactionController();
 
-    const { statusCode, body } =
-        await updateTransactionController.execute(request);
+    const { statusCode, body } = await updateTransactionController.execute(
+        request
+    );
 
     response.status(statusCode).send(body);
 });
 
+// Rota de Login
+
 app.listen(process.env.PORT, () =>
-    console.log(`listening on port ${process.env.PORT}`),
+    console.log(`listening on port ${process.env.PORT}`)
 );
