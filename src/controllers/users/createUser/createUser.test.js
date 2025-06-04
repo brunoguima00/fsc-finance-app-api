@@ -11,7 +11,7 @@ describe('Create User Controller', () => {
         const createUserUseCase = new CreateUserUseCaseStub();
 
         const createUserController = new CreateUserController(
-            createUserUseCase
+            createUserUseCase,
         );
 
         const httpRequest = {
@@ -38,7 +38,7 @@ describe('Create User Controller', () => {
         const createUserUseCase = new CreateUserUseCaseStub();
 
         const createUserController = new CreateUserController(
-            createUserUseCase
+            createUserUseCase,
         );
 
         const httpRequest = {
@@ -60,7 +60,7 @@ describe('Create User Controller', () => {
         const createUserUseCase = new CreateUserUseCaseStub();
 
         const createUserController = new CreateUserController(
-            createUserUseCase
+            createUserUseCase,
         );
 
         const httpRequest = {
@@ -82,7 +82,7 @@ describe('Create User Controller', () => {
         const createUserUseCase = new CreateUserUseCaseStub();
 
         const createUserController = new CreateUserController(
-            createUserUseCase
+            createUserUseCase,
         );
 
         const httpRequest = {
@@ -103,7 +103,7 @@ describe('Create User Controller', () => {
         const createUserUseCase = new CreateUserUseCaseStub();
 
         const createUserController = new CreateUserController(
-            createUserUseCase
+            createUserUseCase,
         );
 
         const httpRequest = {
@@ -111,6 +111,28 @@ describe('Create User Controller', () => {
                 firstName: 'Bruno',
                 lastName: 'Soares',
                 email: '',
+            },
+        };
+        // Act
+        const result = await createUserController.execute(httpRequest);
+
+        // Assert
+        expect(result.statusCode).toBe(400);
+    });
+
+    it('should return 400 if email is not valid', async () => {
+        // arrange
+        const createUserUseCase = new CreateUserUseCaseStub();
+        const createUserController = new CreateUserController(
+            createUserUseCase,
+        );
+
+        const httpRequest = {
+            body: {
+                firstName: 'Bruno',
+                lastName: 'Soares',
+                email: 'bruno',
+                password: '1234456789',
             },
         };
         // Act
