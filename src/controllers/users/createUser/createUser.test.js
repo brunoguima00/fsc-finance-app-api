@@ -141,4 +141,54 @@ describe('Create User Controller', () => {
         // Assert
         expect(result.statusCode).toBe(400);
     });
+
+    it('should return 400 if password is less than 8 characters', async () => {
+        // arrange
+        const createUserUseCase = new CreateUserUseCaseStub();
+        const createUserController = new CreateUserController(
+            createUserUseCase,
+        );
+
+        const httpRequest = {
+            body: {
+                firstName: 'Bruno',
+                lastName: 'Soares',
+                email: '',
+                password: '1234',
+            },
+        };
+        // Act
+
+        const result = await createUserController.execute(httpRequest);
+
+        // Assert
+
+        expect(result.statusCode).toBe(400);
+    });
+
+    it('should call CreateUserUseCase with correct params', async () => {
+        const createUserUseCase = new CreateUserUseCaseStub();
+
+        const createUserController = new CreateUserController(
+            createUserUseCase,
+        );
+
+        const httpRequest = {
+            body: {
+                firstName: 'Bruno',
+                lastName: 'Soares',
+                email: 'bruno@bruno.com.br',
+                password: '1234567',
+            },
+        };
+
+        const executeSpy = jest.spyOn(createUserUseCase, 'execute');
+
+        //Act
+
+        await createUserController.execute(httpRequest);
+
+        //assert
+        expect(executeSpy).toHaveBeenCalledWith(httpRequest.body);
+    });
 });
