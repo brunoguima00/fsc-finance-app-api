@@ -8,13 +8,19 @@ describe('Create User Controller', () => {
             return user;
         }
     }
-    // Arrange
-    it('should create an user', async () => {
+
+    const makeSut = () => {
         const createUserUseCase = new CreateUserUseCaseStub();
 
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        // sut  = suite under tests
+
+        const sut = new CreateUserController(createUserUseCase);
+
+        return { createUserUseCase, sut };
+    };
+    // Arrange
+    it('should create an user', async () => {
+        const { sut } = makeSut();
 
         const httpRequest = {
             body: {
@@ -29,7 +35,7 @@ describe('Create User Controller', () => {
 
         // Act
 
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
 
         // Assert
 
@@ -39,11 +45,7 @@ describe('Create User Controller', () => {
 
     it('should return 400 if firstName is not provided', async () => {
         // arrange
-        const createUserUseCase = new CreateUserUseCaseStub();
-
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut } = makeSut();
 
         const httpRequest = {
             body: {
@@ -55,7 +57,7 @@ describe('Create User Controller', () => {
             },
         };
         // Act
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
 
         // Assert
         expect(result.statusCode).toBe(400);
@@ -63,11 +65,7 @@ describe('Create User Controller', () => {
 
     it('should return 400 if lastName is not provided', async () => {
         // arrange
-        const createUserUseCase = new CreateUserUseCaseStub();
-
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut } = makeSut();
 
         const httpRequest = {
             body: {
@@ -79,7 +77,7 @@ describe('Create User Controller', () => {
             },
         };
         // Act
-        const retult = await createUserController.execute(httpRequest);
+        const retult = await sut.execute(httpRequest);
 
         // Assert
         expect(retult.statusCode).toBe(400);
@@ -87,11 +85,7 @@ describe('Create User Controller', () => {
 
     it('should return 400 if email is not provided', async () => {
         // arrange
-        const createUserUseCase = new CreateUserUseCaseStub();
-
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut } = makeSut();
 
         const httpRequest = {
             body: {
@@ -103,18 +97,14 @@ describe('Create User Controller', () => {
             },
         };
         // Act
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
         // Assert
         expect(result.statusCode).toBe(400);
     });
 
     it('should return 400 if password is not provided', async () => {
         // arrange
-        const createUserUseCase = new CreateUserUseCaseStub();
-
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut } = makeSut();
 
         const httpRequest = {
             body: {
@@ -124,7 +114,7 @@ describe('Create User Controller', () => {
             },
         };
         // Act
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
 
         // Assert
         expect(result.statusCode).toBe(400);
@@ -132,11 +122,7 @@ describe('Create User Controller', () => {
 
     it('should return 400 if email is not valid', async () => {
         // arrange
-        const createUserUseCase = new CreateUserUseCaseStub();
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
-
+        const { sut } = makeSut();
         const httpRequest = {
             body: {
                 firstName: faker.person.firstName(),
@@ -148,7 +134,7 @@ describe('Create User Controller', () => {
             },
         };
         // Act
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
 
         // Assert
         expect(result.statusCode).toBe(400);
@@ -156,10 +142,7 @@ describe('Create User Controller', () => {
 
     it('should return 400 if password is less than 7 characters', async () => {
         // arrange
-        const createUserUseCase = new CreateUserUseCaseStub();
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut } = makeSut();
 
         const httpRequest = {
             body: {
@@ -173,7 +156,7 @@ describe('Create User Controller', () => {
         };
         // Act
 
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
 
         // Assert
 
@@ -181,11 +164,7 @@ describe('Create User Controller', () => {
     });
 
     it('should call CreateUserUseCase with correct params', async () => {
-        const createUserUseCase = new CreateUserUseCaseStub();
-
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut, createUserUseCase } = makeSut();
 
         const httpRequest = {
             body: {
@@ -202,7 +181,7 @@ describe('Create User Controller', () => {
 
         //Act
 
-        await createUserController.execute(httpRequest);
+        await sut.execute(httpRequest);
 
         //assert
         expect(executeSpy).toHaveBeenCalledWith(httpRequest.body);
@@ -211,11 +190,7 @@ describe('Create User Controller', () => {
     it('should return 500 if CreateUserUseCaseThrows', async () => {
         //Arrange
 
-        const createUserUseCase = new CreateUserUseCaseStub();
-
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut, createUserUseCase } = makeSut();
 
         const httpRequest = {
             body: {
@@ -233,7 +208,7 @@ describe('Create User Controller', () => {
         });
 
         //act
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
 
         //assert
         expect(result.statusCode).toBe(500);
@@ -241,10 +216,7 @@ describe('Create User Controller', () => {
 
     it('should return 400 id CreateUserUseCase throws EmailIsAlreadyInUseError', async () => {
         // Arrange
-        const createUserUseCase = new CreateUserUseCaseStub();
-        const createUserController = new CreateUserController(
-            createUserUseCase,
-        );
+        const { sut, createUserUseCase } = makeSut();
 
         const httpRequest = {
             body: {
@@ -262,7 +234,7 @@ describe('Create User Controller', () => {
         });
 
         //Act
-        const result = await createUserController.execute(httpRequest);
+        const result = await sut.execute(httpRequest);
         // Assert
         expect(result.statusCode).toBe(400);
     });
