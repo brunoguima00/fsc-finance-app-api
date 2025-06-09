@@ -27,9 +27,9 @@ export class CreateUserController {
             if (error instanceof EmailAlreadyInUseError) {
                 return badRequest({ message: error.message });
             }
-            console.error(error);
+            // console.error(error);
 
-            return serverError;
+            return serverError();
         }
     }
 }
