@@ -1,3 +1,4 @@
+import { EmailAlreadyInUseError } from '../../../Errors/user.js';
 import { CreateUserController } from './createUserController.js';
 import { faker } from '@faker-js/faker';
 
@@ -236,5 +237,33 @@ describe('Create User Controller', () => {
 
         //assert
         expect(result.statusCode).toBe(500);
+    });
+
+    it('should return 400 id CreateUserUseCase throws EmailIsAlreadyInUseError', async () => {
+        // Arrange
+        const createUserUseCase = new CreateUserUseCaseStub();
+        const createUserController = new CreateUserController(
+            createUserUseCase,
+        );
+
+        const httpRequest = {
+            body: {
+                firstName: faker.person.firstName(),
+                lastName: faker.person.lastName(),
+                email: faker.internet.email(),
+                password: faker.internet.password({
+                    length: 7,
+                }),
+            },
+        };
+
+        jest.spyOn(createUserUseCase, 'execute').mockImplementationOnce(() => {
+            throw new EmailAlreadyInUseError(httpRequest.body.email);
+        });
+
+        //Act
+        const result = await createUserController.execute(httpRequest);
+        // Assert
+        expect(result.statusCode).toBe(400);
     });
 });
