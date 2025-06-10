@@ -41,4 +41,6 @@ export const createUserSchema = z.object({
         }),
 });
 
-export const updateUserSchema = createUserSchema.partial();
+export const updateUserSchema = createUserSchema.partial().strict({
+    message: 'Invalid fields provided',
+});
