@@ -1,42 +1,49 @@
 import { UserNotFoundError } from '../../../Errors/user.js';
+import { getTransactionsByUserIdSchema } from '../../../schemas/transaction.js';
 import {
     userNotFoundResponse,
     serverError,
-    requiredFieldsIsMissingResponse,
-    checkIfIdIsValid,
-    invalidIdResponse,
     ok,
+    badRequest,
 } from '../../helpers/index.js';
+import { ZodError } from 'zod';
 
 export class GetTransactionsByUserIdController {
     constructor(getTransactionsByUserIdUseCase) {
         this.getTransactionsByUserIdUseCase = getTransactionsByUserIdUseCase;
     }
+
     async execute(httpRequest) {
         try {
-            // usamos o query pois será um query param ?param
-            const userId = httpRequest.query.userid;
+            const userId = httpRequest.query.userId;
+            const from = httpRequest.query.from;
+            const to = httpRequest.query.to;
 
-            // Verifica se o Id foi passado como parâmetro
-            if (!userId) {
-                return requiredFieldsIsMissingResponse('userId');
-            }
-            // Verifica se é um Id válido
-            const userIdIsValid = checkIfIdIsValid(userId);
+            await getTransactionsByUserIdSchema.parseAsync({
+                user_id: userId,
+                from,
+                to,
+            });
 
-            if (!userIdIsValid) {
-                return invalidIdResponse();
-            }
+            const transactions =
+                await this.getTransactionsByUserIdUseCase.execute(
+                    userId,
+                    from,
+                    to,
+                );
 
-            const transaction =
-                await this.getTransactionsByUserIdUseCase.execute({ userId });
-
-            return ok(transaction);
+            return ok(transactions);
         } catch (error) {
-            console.log(error);
+            console.error(error);
 
             if (error instanceof UserNotFoundError) {
                 return userNotFoundResponse();
+            }
+
+            if (error instanceof ZodError) {
+                return badRequest({
+                    message: error.errors[0].message,
+                });
             }
             return serverError();
         }
