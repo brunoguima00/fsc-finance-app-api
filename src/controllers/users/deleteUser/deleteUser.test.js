@@ -39,4 +39,15 @@ describe('DeleteUserControle', () => {
         //assert
         expect(result.statusCode).toBe(200);
     });
+
+    it('should return 400 id is invalid', async () => {
+        //Arrange
+        const { sut } = makeSut();
+
+        //act
+        const result = await sut.execute({ params: { userId: 'invalid_id' } });
+
+        //assert
+        expect(result.statusCode).toBe(400);
+    });
 });
